@@ -1,5 +1,5 @@
 import { RequestHandler, Request } from "express";
-import { getUsers } from "../db-mock/users";
+import { findUserBy } from "../dal/mongo/users";
 
 
 export interface AuthenticatedRequest extends Request {
@@ -15,10 +15,10 @@ export const authenticate: RequestHandler = async (req, res, next) => {
         res.status(401).json(error);
         return;
     }
-    const user = (await getUsers()).find(u => u.token === token);
+    const user = (await findUserBy({ token: <string>token }));
     if (user) {
         (req as AuthenticatedRequest).user = user;
-        next()
+        next();
     } else {
         const error: ApiError = {
             message: "Token is invalid"

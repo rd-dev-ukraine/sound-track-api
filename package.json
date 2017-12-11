@@ -8,19 +8,22 @@
     "clean": "rimraf ./build/*",
     "serve": "nodemon -e ts  --exec \"npm run start:debug\"",
     "start:debug": "npm run build && node --inspect ./build/server.js",
-    "build": "tsc",
-    "typescript": "^2.6.2"    
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
-    "rimraf": "^2.6.2"
+    "mongodb": "^2.2.33",
+    "rimraf": "^2.6.2",
+    "typescript": "^2.6.2"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.8",
     "@types/express": "^4.0.39",
+    "@types/mongodb": "^2.2.16",
     "@types/node": "^8.0.53",
     "concurrently": "^3.5.1",
     "nodemon": "^1.12.1"

@@ -3,3 +3,6 @@ build/
 
 #dependencies
 node_modules/
+
+#creds
+.env

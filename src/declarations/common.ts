@@ -9,3 +9,7 @@ interface ValidationResultError<T> {
 }
 
 type ValidationResult<T> = ValidationResultOk<T> | ValidationResultError<T>;
+
+type FindByQuery<T> = {
+    [key in keyof T]?: string | number
+};

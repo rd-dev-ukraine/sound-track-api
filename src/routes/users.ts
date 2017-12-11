@@ -1,22 +1,22 @@
 import * as express from "express";
 
 import {
-    getUsers,
-    getHash,
+    // getUsers,
     updateToken,
     validateUser,
     saveUser,
     getUserFromRequest,
     serializeUser,
-    updateUser
-} from "../db-mock/users";
+    updateUser,
+    authentocateUser
+} from "../dal/mongo/users";
 import { authenticate, AuthenticatedRequest } from "../middleware/auth";
 
 const usersRouter = express.Router();
 
-usersRouter.get("/", async (_, res) => {
-    res.status(200).json((await getUsers()).map(serializeUser));
-});
+// usersRouter.get("/", async (_, res) => {
+//     res.status(200).json((await getUsers()).map(serializeUser));
+// });
 
 usersRouter.post('/login', async (req, res) => {
     const creds = {
@@ -24,12 +24,10 @@ usersRouter.post('/login', async (req, res) => {
         password: req.body.password
     };
 
-    const user = (await getUsers())
-        .find(u => u.email === creds.email
-            && u.passwordHash === getHash(creds.password));
+    const user = await authentocateUser(creds);
     if (user) {
-        await updateToken(user.id);
-        res.status(201).json(serializeUser(user));
+        const withNewToken = await updateToken(user.id);
+        res.status(201).json(serializeUser(withNewToken));
     } else {
         const err: ApiError<User> = { message: "Wrong user credentials" };
         res.status(401).json(err);
@@ -40,7 +38,6 @@ usersRouter.post('/', async (req, res) => {
     const validationResult = await validateUser(getUserFromRequest(req));
     if (validationResult.isValid) {
         const savedUser = await saveUser(validationResult.data);
-        await updateToken(savedUser.id);
         res.status(201).json(serializeUser(savedUser));
     } else if (validationResult.isValid === false) {
         const errorResp: ApiError<User> = {

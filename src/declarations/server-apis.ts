@@ -1,5 +1,5 @@
 interface UserBase {
-    id?: number;
+    id?: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -31,12 +31,12 @@ interface ErrorResult<T> {
     error: ApiError<T>;
 }
 
-type ApiResponse<T = {}, E = T> = OkResult<T> | ErrorResult<E>;
+type ApiResponse<T = {}, E = T> = OkResult<T> | ErrorResult<E>
 
 
 interface ApiError<T = {}> {
-    message: string;
-    fieldErrors?: ModelErrors<T>;
+    message: string,
+    fieldErrors?: ModelErrors<T>,
 }
 
 type ModelErrors<T> = {[field in keyof T]: string; }
