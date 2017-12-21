@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
 const router = express.Router();
 
+app.use(express.static('public'));
 //Allow cross origin requests
 app.use(function (_, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
