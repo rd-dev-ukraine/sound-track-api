@@ -1,7 +1,7 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as dotenv from "dotenv";
-
+import * as path from "path";
 import { connectToDb } from "./database/mongo";
 
 import usersRouter from "./routes/users";
@@ -25,6 +25,10 @@ app.use(function (_, res, next) {
 router.use("/users", usersRouter);
 
 app.use('/api', router);
+
+app.get('*', function (_, res) {
+    res.sendFile('index.html', { root: path.resolve(__dirname, "../public") });
+});
 
 connectToDb().then(_ => {
     app.listen(port, () => {
